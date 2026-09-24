@@ -1,0 +1,586 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+
+<head>
+
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="description" content="">
+    <meta name="author" content="">
+
+    <title>Ceub - Cadastro de Pet Desaparecido</title>
+
+    <!-- Custom fonts for this template-->
+    <link href="vendor/fontawesome-free/css/all.min.css" rel="stylesheet" type="text/css">
+    <link
+        href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i"
+        rel="stylesheet">
+
+    <!-- Custom styles for this template-->
+    <link href="css/sb-admin-2.min.css" rel="stylesheet">
+
+    <!-- Sobrescreve a cor da sidebar: azul -> roxo + estilo do formulário -->
+    <style>
+        :root {
+            --pet-purple: #6f42c1;
+            --pet-purple-dark: #4b2e83;
+            --pet-purple-light: #f4f0fb;
+        }
+
+        .bg-gradient-primary {
+            background-color: var(--pet-purple);
+            background-image: linear-gradient(180deg, var(--pet-purple) 10%, var(--pet-purple-dark) 100%);
+            background-size: cover;
+        }
+
+        body {
+            background-color: #f7f6fb;
+        }
+
+        .page-title {
+            font-weight: 800;
+            color: #5a5c69;
+        }
+
+        /* Cartão de cada seção do formulário */
+        .pet-section {
+            background: #fff;
+            border-radius: 1rem;
+            box-shadow: 0 0.15rem 1.5rem 0 rgba(58, 59, 69, 0.1);
+            padding: 1.75rem;
+            margin-bottom: 1.75rem;
+            border: none;
+        }
+
+        .pet-section-title {
+            display: flex;
+            align-items: center;
+            gap: 0.6rem;
+            font-weight: 800;
+            font-size: 1.15rem;
+            color: var(--pet-purple-dark);
+            margin-bottom: 1.25rem;
+        }
+
+        .pet-section-title i {
+            background: var(--pet-purple-light);
+            color: var(--pet-purple);
+            width: 38px;
+            height: 38px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1rem;
+        }
+
+        .pet-section .form-label {
+            font-weight: 700;
+            color: #5a5c69;
+            font-size: 0.9rem;
+        }
+
+        .pet-section .form-control,
+        .pet-section .form-select {
+            border-radius: 0.75rem;
+            border: 1px solid #dcdcec;
+            padding: 0.65rem 1rem;
+        }
+
+        .pet-section .form-control:focus,
+        .pet-section .form-select:focus {
+            border-color: var(--pet-purple);
+            box-shadow: 0 0 0 0.2rem rgba(111, 66, 193, 0.15);
+        }
+
+        .pet-section textarea.form-control {
+            border-radius: 0.75rem;
+        }
+
+        .required {
+            color: #e74a3b;
+        }
+
+        .btn-pet-primary {
+            background-color: var(--pet-purple);
+            border-color: var(--pet-purple);
+            border-radius: 0.75rem;
+            font-weight: 700;
+            padding: 0.6rem 1.75rem;
+        }
+
+        .btn-pet-primary:hover {
+            background-color: var(--pet-purple-dark);
+            border-color: var(--pet-purple-dark);
+        }
+
+        .btn-pet-outline {
+            border-radius: 0.75rem;
+            font-weight: 700;
+            padding: 0.6rem 1.75rem;
+        }
+
+        .upload-box {
+            border: 2px dashed #d6cdea;
+            border-radius: 0.75rem;
+            padding: 1.25rem;
+            background: var(--pet-purple-light);
+        }
+
+        /* Tabela de animais encontrados - sem rolagem horizontal */
+        .pet-table-wrapper {
+            max-width: 1100px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        .pet-table {
+            table-layout: fixed;
+            width: 100%;
+        }
+
+        .pet-table thead th {
+            border: none;
+            border-bottom: 2px solid #eee9f7;
+            color: #858796;
+            text-transform: uppercase;
+            font-size: 0.75rem;
+            letter-spacing: 0.03em;
+            padding: 0.5rem 0.4rem 0.85rem;
+            text-align: center;
+            word-wrap: break-word;
+        }
+
+        .pet-table tbody td {
+            vertical-align: middle;
+            padding: 0.85rem 0.4rem;
+            border-top: 1px solid #eee9f7;
+            text-align: center;
+            word-wrap: break-word;
+            overflow-wrap: break-word;
+        }
+
+        .pet-table tbody tr:last-child td {
+            border-bottom: 1px solid #eee9f7;
+        }
+
+        .pet-thumb {
+            width: 48px;
+            height: 48px;
+            border-radius: 0.6rem;
+            object-fit: cover;
+            background: var(--pet-purple-light);
+        }
+
+        .badge-encontrado {
+            background-color: #1cc88a;
+            color: #fff;
+            font-weight: 700;
+            padding: 0.4em 0.75em;
+            border-radius: 0.5rem;
+        }
+    </style>
+
+</head>
+
+<body id="page-top">
+
+    <!-- Page Wrapper -->
+    <div id="wrapper">
+
+        <!-- Sidebar -->
+        <ul class="navbar-nav bg-gradient-primary sidebar sidebar-dark accordion" id="accordionSidebar">
+
+            <!-- Sidebar - Brand -->
+            <a class="sidebar-brand d-flex align-items-center justify-content-center" href="#">
+                <div class="sidebar-brand-icon">
+                     <img src="https://institucional.uniceub.br/hubfs/BrandCenter/img/logo-ceub-assinatura-conceito-centralizado-01.png" width="100" height="80">
+                </div>
+            </a>
+
+            <!-- Divider -->
+            <hr class="sidebar-divider my-0">
+
+            <!-- Nav Item - Dashboard -->
+            <li class="nav-item active">
+                <a class="nav-link" href="#dashboard">
+                    <i class="fas fa-fw fa-tachometer-alt"></i>
+                    <span>Dashboard</span></a>
+            </li>
+
+            <!-- Divider -->
+            <hr class="sidebar-divider">
+
+            <!-- Heading -->
+            <div class="sidebar-heading">
+                Informações
+            </div>
+
+            <!-- Nav Item - Animais Achados -->
+            <li class="nav-item">
+                <a class="nav-link" href="#achados">
+                    <i class="fas fa-fw fa-check-circle"></i>
+                    <span>Animais Achados</span></a>
+            </li>
+
+            <!-- Nav Item - Animal Perdido -->
+            <li class="nav-item">
+                <a class="nav-link" href="#cadastro">
+                    <i class="fas fa-fw fa-paw"></i>
+                    <span>Animal Perdido</span></a>
+            </li>
+
+            <!-- Divider -->
+            <hr class="sidebar-divider">
+
+        </ul>
+        <!-- End of Sidebar -->
+
+        <!-- Content Wrapper -->
+        <div id="content-wrapper" class="d-flex flex-column">
+
+            <!-- Main Content -->
+            <div id="content">
+
+                <!-- Topbar -->
+                <nav class="navbar navbar-expand navbar-light bg-white topbar mb-4 static-top shadow">
+
+                    <!-- Sidebar Toggle (Topbar) -->
+                    <button id="sidebarToggleTop" class="btn btn-link d-md-none rounded-circle mr-3">
+                        <i class="fa fa-bars"></i>
+                    </button>
+
+                    <!-- Topbar Search -->
+                    <form
+                        class="d-none d-sm-inline-block form-inline mr-auto ml-md-3 my-2 my-md-0 mw-100 navbar-search">
+                        <div class="input-group">
+                            <input type="text" class="form-control bg-light border-0 small" placeholder="Pesquisar..."
+                                aria-label="Search" aria-describedby="basic-addon2">
+                            <div class="input-group-append">
+                                <button class="btn btn-primary" type="button">
+                                    <i class="fas fa-search fa-sm"></i>
+                                </button>
+                            </div>
+                        </div>
+                    </form>
+
+                    <!-- Topbar Navbar -->
+                    <ul class="navbar-nav ml-auto">
+
+                        <!-- Nav Item - User Information -->
+                        <li class="nav-item dropdown no-arrow">
+                            <a class="nav-link dropdown-toggle" href="#" id="userDropdown" role="button"
+                                data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                <span class="mr-2 d-none d-lg-inline text-gray-600 small">William Ribeiro</span>
+                                <img class="img-profile rounded-circle"
+                                    src="img/undraw_profile.svg">
+                            </a>
+                            <div class="dropdown-menu dropdown-menu-right shadow animated--grow-in"
+                                aria-labelledby="userDropdown">
+                                <a class="dropdown-item" href="#" data-toggle="modal" data-target="#logoutModal">
+                                    <i class="fas fa-sign-out-alt fa-sm fa-fw mr-2 text-gray-400"></i>
+                                    Logout
+                                </a>
+                            </div>
+                        </li>
+
+                    </ul>
+
+                </nav>
+                <!-- End of Topbar -->
+
+                <!-- Begin Page Content -->
+                <div class="container-fluid">
+
+                    <!-- Seção Dashboard -->
+                    <div id="dashboard" class="page-view">
+                        <h1 class="page-title mb-4">Dashboard</h1>
+                        <div class="pet-section">
+                            <p class="mb-0">Bem-vindo! Use o menu ao lado para ver os animais já encontrados ou
+                                cadastrar um animal perdido.</p>
+                        </div>
+                    </div>
+
+                    <!-- Seção Animais Achados -->
+                    <div id="achados" class="page-view" style="display:none;">
+                        <h1 class="page-title mb-4">Animais Achados</h1>
+
+                        <div class="pet-section pet-table-wrapper">
+                            <div class="pet-section-title justify-content-center">
+                                <i class="fas fa-check-circle"></i>
+                                Animais já encontrados pela nossa página
+                            </div>
+
+                            <div class="table-responsive">
+                                <table class="table pet-table mb-0">
+                                    <thead>
+                                        <tr>
+                                            <th>Foto</th>
+                                            <th>Nome</th>
+                                            <th>Tipo</th>
+                                            <th>Raça</th>
+                                            <th>Local onde foi encontrado</th>
+                                            <th>Data</th>
+                                            <th>Status</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                            <td><img class="pet-thumb" src="https://images.unsplash.com/photo-1594653283108-953a4f93400e?fm=jpg&amp;q=80&amp;w=200&amp;h=200&amp;fit=crop&amp;auto=format" alt="Rex"></td>
+                                            <td>Rex</td>
+                                            <td>Cachorro</td>
+                                            <td>SRD</td>
+                                            <td>Parque das Nações, Goiânia</td>
+                                            <td>12/09/2026</td>
+                                            <td><span class="badge-encontrado">Encontrado</span></td>
+                                        </tr>
+                                        <tr>
+                                            <td><img class="pet-thumb" src="https://images.unsplash.com/photo-1637502238866-4413c268bdb3?fm=jpg&amp;q=80&amp;w=200&amp;h=200&amp;fit=crop&amp;auto=format" alt="Mimi"></td>
+                                            <td>Mimi</td>
+                                            <td>Gato</td>
+                                            <td>Persa</td>
+                                            <td>Setor Bueno, Goiânia</td>
+                                            <td>03/08/2026</td>
+                                            <td><span class="badge-encontrado">Encontrado</span></td>
+                                        </tr>
+                                        <tr>
+                                            <td><img class="pet-thumb" src="https://images.unsplash.com/photo-1544800086-912aa3f623ee?fm=jpg&amp;q=80&amp;w=200&amp;h=200&amp;fit=crop&amp;auto=format" alt="Thor"></td>
+                                            <td>Thor</td>
+                                            <td>Cachorro</td>
+                                            <td>Labrador</td>
+                                            <td>Av. T-9, Goiânia</td>
+                                            <td>21/07/2026</td>
+                                            <td><span class="badge-encontrado">Encontrado</span></td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Seção Cadastro -->
+                    <div id="cadastro" class="page-view" style="display:none;">
+                    <h1 class="page-title mb-4">Cadastro de Pet Desaparecido</h1>
+
+                    <form action="#" method="post" enctype="multipart/form-data">
+
+                        <!-- Dados do Pet -->
+                        <div class="pet-section">
+                            <div class="pet-section-title">
+                                <i class="fas fa-paw"></i>
+                                Dados do Pet
+                            </div>
+
+                            <div class="row g-3">
+                                <div class="col-12 col-md-6">
+                                    <label class="form-label" for="nome_animal">Nome do animal <span class="required">*</span></label>
+                                    <input class="form-control" id="nome_animal" name="nome_animal" type="text" placeholder="Digite o nome do animal" required>
+                                </div>
+
+                                <div class="col-12 col-md-3">
+                                    <label class="form-label" for="tipo_animal">Tipo <span class="required">*</span></label>
+                                    <select class="form-select" id="tipo_animal" name="tipo_animal" required>
+                                        <option value="" selected disabled>Escolha...</option>
+                                        <option value="cachorro">Cachorro</option>
+                                        <option value="gato">Gato</option>
+                                        <option value="passaro">Pássaro</option>
+                                        <option value="coelho">Coelho</option>
+                                        <option value="outro">Outro</option>
+                                    </select>
+                                </div>
+
+                                <div class="col-12 col-md-3">
+                                    <label class="form-label" for="idade">Idade</label>
+                                    <input class="form-control" id="idade" name="idade" type="text" placeholder="Anos">
+                                </div>
+
+                                <div class="col-12 col-md-6">
+                                    <label class="form-label" for="raca">Raça</label>
+                                    <input class="form-control" id="raca" name="raca" type="text" placeholder="Ex.: Golden Retriever">
+                                </div>
+
+                                <div class="col-12 col-md-3">
+                                    <label class="form-label" for="porte">Porte</label>
+                                    <select class="form-select" id="porte" name="porte">
+                                        <option value="" selected>Escolha...</option>
+                                        <option value="pequeno">Pequeno</option>
+                                        <option value="medio">Médio</option>
+                                        <option value="grande">Grande</option>
+                                    </select>
+                                </div>
+
+                                <div class="col-12 col-md-3">
+                                    <label class="form-label" for="cor">Cor</label>
+                                    <input class="form-control" id="cor" name="cor" type="text" placeholder="Ex.: Caramelo">
+                                </div>
+
+                                <div class="col-12">
+                                    <label class="form-label" for="foto">Foto do animal <span class="required">*</span></label>
+                                    <div class="upload-box text-center">
+                                        <i class="fas fa-camera fa-2x mb-2" style="color: var(--pet-purple);"></i>
+                                        <input class="form-control" id="foto" name="foto" type="file" accept="image/*" required>
+                                        <p class="help-text mb-0 mt-2 small text-muted">Formatos aceitos: JPG, PNG. Máx. 5MB.</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Informações do Desaparecimento -->
+                        <div class="pet-section">
+                            <div class="pet-section-title">
+                                <i class="fas fa-map-marker-alt"></i>
+                                Informações do Desaparecimento
+                            </div>
+
+                            <div class="row g-3">
+                                <div class="col-12 col-md-4">
+                                    <label class="form-label" for="data_perda">Data do desaparecimento <span class="required">*</span></label>
+                                    <input class="form-control" id="data_perda" name="data_perda" type="date" required>
+                                </div>
+
+                                <div class="col-12 col-md-4">
+                                    <label class="form-label" for="cidade">Cidade <span class="required">*</span></label>
+                                    <input class="form-control" id="cidade" name="cidade" type="text" placeholder="Ex.: Goiânia" required>
+                                </div>
+
+                                <div class="col-12 col-md-4">
+                                    <label class="form-label" for="microchip">Possui microchip/coleira?</label>
+                                    <select class="form-select" id="microchip" name="microchip">
+                                        <option value="" selected>Escolha...</option>
+                                        <option value="sim">Sim</option>
+                                        <option value="nao">Não</option>
+                                    </select>
+                                </div>
+
+                                <div class="col-12">
+                                    <label class="form-label" for="local">Local onde desapareceu <span class="required">*</span></label>
+                                    <input class="form-control" id="local" name="local" type="text" placeholder="Rua, praça, parque..." required>
+                                </div>
+
+                                <div class="col-12">
+                                    <label class="form-label" for="caracteristicas">Características / Observações</label>
+                                    <textarea class="form-control" id="caracteristicas" name="caracteristicas" rows="3" placeholder="Ex.: mancha branca no peito, orelha caída, manca da pata traseira..."></textarea>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Dados do Tutor -->
+                        <div class="pet-section">
+                            <div class="pet-section-title">
+                                <i class="fas fa-user"></i>
+                                Dados do Tutor
+                            </div>
+
+                            <div class="row g-3">
+                                <div class="col-12 col-md-6">
+                                    <label class="form-label" for="nome_tutor">Nome <span class="required">*</span></label>
+                                    <input class="form-control" id="nome_tutor" name="nome_tutor" type="text" placeholder="Digite seu nome" required>
+                                </div>
+
+                                <div class="col-12 col-md-6">
+                                    <label class="form-label" for="telefone">Telefone <span class="required">*</span></label>
+                                    <input class="form-control" id="telefone" name="telefone" type="tel" placeholder="(11) 91234-5678" required>
+                                </div>
+
+                                <div class="col-12 col-md-6">
+                                    <label class="form-label" for="email">Email</label>
+                                    <input class="form-control" id="email" name="email" type="email" placeholder="nome@exemplo.com">
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="d-flex gap-2 mb-4">
+                            <button class="btn btn-pet-primary" type="submit">Cadastrar</button>
+                            <button class="btn btn-outline-secondary btn-pet-outline" type="reset">Limpar</button>
+                        </div>
+
+                    </form>
+                    </div>
+                    <!-- Fim Seção Cadastro -->
+
+                </div>
+                <!-- /.container-fluid -->
+
+            </div>
+            <!-- End of Main Content -->
+
+            <!-- Footer -->
+            <footer class="sticky-footer bg-white">
+                <div class="container my-auto">
+                    <div class="copyright text-center my-auto">
+                        <span>Copyright &copy; Ceub 2026</span>
+                    </div>
+                </div>
+            </footer>
+            <!-- End of Footer -->
+
+        </div>
+        <!-- End of Content Wrapper -->
+
+    </div>
+    <!-- End of Page Wrapper -->
+
+    <!-- Scroll to Top Button-->
+    <a class="scroll-to-top rounded" href="#page-top">
+        <i class="fas fa-angle-up"></i>
+    </a>
+
+    <!-- Logout Modal-->
+    <div class="modal fade" id="logoutModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+        aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabel">Pronto para Sair?</h5>
+                    <button class="close" type="button" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">×</span>
+                    </button>
+                </div>
+                <div class="modal-body">Deseja realmente sair?</div>
+                <div class="modal-footer">
+                    <button class="btn btn-secondary" type="button" data-dismiss="modal">Cancelar</button>
+                    <a class="btn btn-primary" href="#">Sair</a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Bootstrap core JavaScript-->
+    <script src="vendor/jquery/jquery.min.js"></script>
+    <script src="vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+
+    <!-- Alterna entre as seções (Dashboard / Animais Achados / Animal Perdido) -->
+    <script>
+        function mostrarSecao(id) {
+            document.querySelectorAll('.page-view').forEach(function (secao) {
+                secao.style.display = (secao.id === id) ? 'block' : 'none';
+            });
+            document.querySelectorAll('#accordionSidebar .nav-item').forEach(function (item) {
+                item.classList.remove('active');
+            });
+            var link = document.querySelector('#accordionSidebar a[href="#' + id + '"]');
+            if (link) {
+                link.closest('.nav-item').classList.add('active');
+            }
+        }
+
+        document.querySelectorAll('#accordionSidebar a[href^="#"]').forEach(function (link) {
+            link.addEventListener('click', function (e) {
+                e.preventDefault();
+                var id = this.getAttribute('href').substring(1);
+                mostrarSecao(id);
+                window.scrollTo({ top: 0, behavior: 'smooth' });
+            });
+        });
+
+        // Mostra a seção certa ao abrir a página, com base no link (#dashboard, #achados, #cadastro)
+        window.addEventListener('DOMContentLoaded', function () {
+            var idInicial = window.location.hash ? window.location.hash.substring(1) : 'dashboard';
+            mostrarSecao(idInicial);
+        });
+    </script>
+
+</body>
+
+</html>
